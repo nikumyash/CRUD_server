@@ -13,8 +13,7 @@ async function handler(e){
                 studentname:studentn
             })
         })
-        const data = await response.json();
-        console.log(data);
+        if(response.status==404)throw 'Failed';
         location.reload();
     }
     catch(e){
@@ -32,8 +31,6 @@ async function likehandler(e){
                 name:n
             })
         })
-        const data = await response.json();
-        console.log(data);
         location.reload();
     }
     catch(e){

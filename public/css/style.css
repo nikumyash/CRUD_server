@@ -1,0 +1,25 @@
+body{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif\';
+    font-size:2rem;
+    
+}
+li{
+    list-style:none;
+}
+div.add-project{
+    font-size: 2rem;
+    font-weight: bolder;
+}
+
+.name{
+    font-weight: bolder;
+    font-size: 2.2rem;
+}
+.del{
+    font-style: italic;
+    color:gray;
+}
+.like{
+    font-style: italic;
+    color:gray;
+}

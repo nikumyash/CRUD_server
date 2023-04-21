@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
     <title>Document</title>
 </head>
 <body>
@@ -11,8 +12,8 @@
     <ul class="projects">
     <% for(let i=0;i<info.length;i++) {%>
         <li class="project">
-            <span><%= info[i].name %></span>
-            <span><%= info[i].studentname %></span>
+            <span class="name"><%= info[i].name %></span>
+            <span class="studentn"><%= info[i].studentname %></span>
             <span class="del" > delete </span>
             <span class="like" > like </span>
             <span ><%= info[i].likes %></span>
@@ -20,7 +21,7 @@
         </li>
     <% } %>
     </ul>
-    <div>Add a project</div>
+    <div class="add-project">Add a project</div>
     <form action="/postdata" method="POST">
         <label for="name">Project Name : </label>
         <input type="text" name="name" id="name">
@@ -28,6 +29,6 @@
         <input type="text" name="studentname" id="studentname">
         <button type="submit">Submit</button>
     </form>
-    <script src="/script.js"></script>
+    <script src="/js/script.js"></script>
 </body>
 </html>

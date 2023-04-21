@@ -1,33 +1,53 @@
 const express = require('express');
+require('dotenv').config();
 const app = express();
-let data = [{name:"crud-app",studentname:"yash" ,likes:0},{name:"idkapp",studentname:"jaadu",likes:0}];
+const MongoClient = require('mongodb').MongoClient;
 
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
+MongoClient.connect(process.env.CON_STR,{useUnifiedTopology:true})
+.then((client)=>{
+    const db = client.db('crud-db');
+    const todoCollection = db.collection('to-do');
+    app.get('/',async (req,res)=>{
+        try{
+            const data = await todoCollection.find().toArray();
+            console.log(data);
+            res.render('main.ejs',{info:data});
+        }catch(err){console.log(err);res.status(404).send(err)}
+    })
+    
+    app.post('/postdata',async (req,res)=>{
+        req.body.likes = 0;
+        todoCollection.insertOne(req.body).then((result)=>{
+            console.log(result);
+        }).catch((err)=>console.log(err));
+        res.redirect('/');
 
-app.get('/',(req,res)=>{
-    res.render('main.ejs',{info:data});
+    })
+    app.delete('/deleteproject',async (req,res)=>{
+        const name = req.body.name;
+        try{
+            await todoCollection.deleteOne({name:name});
+            res.status(200).send('Success');
+        }
+        catch(err){console.log(err);res.status(404).send(err)}
+        
+    })
+    app.put('/likeproject',async (req,res)=>{
+        try{
+            const name = req.body.name;
+            await todoCollection.findOneAndUpdate({name:name},{$inc:{likes:1}});
+            res.status(200);
+            res.send('Success');
+        }catch(err){console.log(err);res.status(404).send(err)}
+    })
+    console.log("connected to the db");
 })
+.catch((err)=>console.log(err));
 
-app.post('/postdata',(req,res)=>{
-    const cur = req.body;
-    cur.likes =0;
-    data.push(cur);
-    res.redirect('/');
-})
-app.delete('/deleteproject',(req,res)=>{
-    const name = req.body.name;
-    data = data.filter((each)=>each.name!==name)
-    console.log(data);
-    res.send(data);
-})
-app.put('/likeproject',(req,res)=>{
-    const name = req.body.name;
-    data = data.map((each)=>{if(each.name==name){each.likes= each.likes + 1}return each});
-    res.send(data);
-})
 app.listen(process.env.PORT || 6969,()=>{
     console.log("listening to port 6969");
 })
