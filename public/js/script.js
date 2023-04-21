@@ -13,7 +13,7 @@ async function handler(e){
                 studentname:studentn
             })
         })
-        if(response.status==404)throw 'Failed';
+        if(response.status==404)throw new Error('Failed');
         location.reload();
     }
     catch(e){
@@ -31,6 +31,7 @@ async function likehandler(e){
                 name:n
             })
         })
+        if(response.status==404)throw new Error('Failed');
         location.reload();
     }
     catch(e){
